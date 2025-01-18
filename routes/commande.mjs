@@ -13,8 +13,25 @@ const db = await mysql.createConnection(dbConfig);
 
 commandeRouteur.get("/", async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM commandes");
-    res.send(rows);
+    const [rows] = await db.query(
+      "select * from commandes c join produits_commandes pc on pc.id_commande = c.id"
+    );
+    const results = {};
+    rows.forEach((row) => {
+      if (!results[row.id_commande]) {
+        results[row.id_commande] = {
+          id_commande: row.id_commande,
+          id_client: row.id_client,
+          produits: [],
+        };
+      }
+      results[row.id_commande].produits.push({
+        id_produit: row.id_produit,
+        nom: row.produit_nom,
+        prix: row.produit_prix,
+      });
+    });
+    res.send(Object.values(results));
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred while fetching commandes.");
