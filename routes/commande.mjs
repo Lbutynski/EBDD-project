@@ -13,15 +13,30 @@ const db = await mysql.createConnection(dbConfig);
 
 commandeRouteur.get("/", async (req, res) => {
   try {
-    const [rows] = await db.query(
-      "select * from commandes c join produits_commandes pc on pc.id_commande = c.id"
-    );
+    const start = req.params.start;
+    const end = req.params.end;
+    const querry = `SELECT 
+        c.id AS id_commande,
+        c.id_client,
+        c.date_commande,
+        pc.id AS id_produit_commande,
+        pc.id_produit,
+        p.nom AS produit_nom,
+        p.prix AS produit_prix
+      FROM commandes c
+      JOIN produits_commandes pc ON pc.id_commande = c.id
+      JOIN produits p ON pc.id_produit = p.id`;
+    if (start && end) {
+      (querry += ` WHERE c.date_commande BETWEEN ? AND ?`), [start, end];
+    }
+    const [rows] = await db.query(querry);
     const results = {};
     rows.forEach((row) => {
       if (!results[row.id_commande]) {
         results[row.id_commande] = {
           id_commande: row.id_commande,
           id_client: row.id_client,
+          date_commande: row.date_commande,
           produits: [],
         };
       }

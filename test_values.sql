@@ -28,11 +28,12 @@ INSERT INTO clients (prenom, nom, addresse) VALUES
 ('Diana', 'Adams', '101 Elm Boulevard');
 
 -- Populate the commandes table
-INSERT INTO commandes (id_client) VALUES
-(1),
-(2),
-(3),
-(4);
+INSERT INTO commandes (id_client,date_commande) VALUES
+(1,"2023-01-15"),
+(2,"2023-05-78"),
+(3,"2025-01-29"),
+(4,"2020-11-13");
+
 
 -- Populate the produits_commandes table
 INSERT INTO produits_commandes (id_commande, id_produit) VALUES

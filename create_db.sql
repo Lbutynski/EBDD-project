@@ -26,6 +26,7 @@ CREATE TABLE IF NOT exists clients(
 CREATE TABLE IF NOT EXISTS commandes(
 	id int auto_increment primary key,
   id_client int NOT NULL,
+  date_commande date NOT NULL,
   foreign key (id_client) references clients(id));
   
 CREATE table if not exists produits_commandes(
