@@ -54,9 +54,12 @@ commandeRouteur.get("/", async (req, res) => {
 });
 
 commandeRouteur.post("/", async (req, res) => {
-  const { id_client } = req.body;
+  const { id_client, date_commande } = req.body;
   try {
-    await db.query("INSERT INTO commandes (id_client) VALUES (?)", [id_client]);
+    await db.query(
+      "INSERT INTO commandes (id_client,date_commande) VALUES (?,?)",
+      [id_client, date_commande]
+    );
     res.sendStatus(200);
   } catch (error) {
     console.error(error);
