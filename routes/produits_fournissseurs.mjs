@@ -8,10 +8,10 @@ const dbConfig = {
   database: "avion",
 };
 
-const produitRouteur = Router();
+const produitFournisseurRouteur = Router();
 const db = await mysql.createConnection(dbConfig);
 
-produitRouteur.get("/", async (req, res) => {
+produitFournisseurRouteur.get("/", async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM produits_fournisseurs");
     res.send(rows);
@@ -23,7 +23,7 @@ produitRouteur.get("/", async (req, res) => {
   }
 });
 
-produitRouteur.post("/", async (req, res) => {
+produitFournisseurRouteur.post("/", async (req, res) => {
   const { id_commande, id_fournisseur } = req.body;
   try {
     await db.query(
@@ -39,7 +39,7 @@ produitRouteur.post("/", async (req, res) => {
   }
 });
 
-produitRouteur.delete("/:id", async (req, res) => {
+produitFournisseurRouteur.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     await db.query("DELETE FROM produits_fournisseurs WHERE id = ?", [id]);
@@ -52,7 +52,7 @@ produitRouteur.delete("/:id", async (req, res) => {
   }
 });
 
-produitRouteur.put("/:id", async (req, res) => {
+produitFournisseurRouteur.put("/:id", async (req, res) => {
   const { id } = req.params;
   const { id_commande, id_fournisseur } = req.body;
   try {
@@ -69,4 +69,4 @@ produitRouteur.put("/:id", async (req, res) => {
   }
 });
 
-export default produitRouteur;
+export default produitFournisseurRouteur;

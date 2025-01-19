@@ -7,6 +7,8 @@ import categorieRouteur from "./routes/categories.mjs";
 import fournisseurRouteur from "./routes/fournisseur.mjs";
 import commandeRouteur from "./routes/commande.mjs";
 import statsRouteur from "./routes/stats.mjs";
+import produitCommandesRouteur from "./routes/produits_commandes.mjs";
+import produitFournisseurRouteur from "./routes/produits_fournissseurs.mjs";
 const app = express();
 app.use(cors({ origin: "*" }));
 app.use(express.json());
@@ -16,6 +18,8 @@ app.use("/api/categorie", categorieRouteur);
 app.use("/api/fournisseur", fournisseurRouteur);
 app.use("/api/commande", commandeRouteur);
 app.use("/api/stats", statsRouteur);
+app.use("/api/produit-commande", produitCommandesRouteur);
+app.use("/api/produit-fournisseur", produitFournisseurRouteur);
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
