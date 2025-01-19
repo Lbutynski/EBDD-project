@@ -36,12 +36,12 @@ INSERT INTO commandes (id_client,date_commande) VALUES
 
 
 -- Populate the produits_commandes table
-INSERT INTO produits_commandes (id_commande, id_produit) VALUES
-(1, 1),
-(1, 3),
-(2, 2),
-(3, 4),
-(4, 5);
+INSERT INTO produits_commandes (id_commande, id_produit,quantite) VALUES
+(1, 1,1),
+(1, 3,2),
+(2, 2,1),
+(3, 4, 5),
+(4, 5, 4);
 
 -- Populate the produits_fournisseurs table
 INSERT INTO produits_fournisseurs (id_produit, id_fournisseur) VALUES

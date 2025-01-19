@@ -33,6 +33,7 @@ CREATE table if not exists produits_commandes(
 	id int auto_increment primary key,
   id_commande int NOT NULL,
   id_produit int NOT NULL,
+  quantite int NOT NULL DEFAULT 1,
   foreign key (id_commande)references commandes(id),
   foreign key (id_produit)references produits(id));
     

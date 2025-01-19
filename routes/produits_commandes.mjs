@@ -27,7 +27,7 @@ produitRouteur.post("/", async (req, res) => {
   const { id_commande, id_produit } = req.body;
   try {
     await db.query(
-      "INSERT INTO produits_commandes (id_commande, id_produit) VALUES (?, ?)",
+      "INSERT INTO produits_commandes (id_commande, id_produit,quantite) VALUES (?, ?,?)",
       [id_commande, id_produit]
     );
     res.sendStatus(200);

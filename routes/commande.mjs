@@ -63,6 +63,59 @@ commandeRouteur.post("/", async (req, res) => {
     res.status(500).send("An error occurred while adding the commande.");
   }
 });
+commandeRouteur.post("/commandes", async (req, res) => {
+  const { clientId, produits } = req.body;
+
+  const insufficientStockProducts = [];
+  for (const produit of produits) {
+    const [product] = await db.query(
+      "SELECT quantité_en_stock FROM produits WHERE id = ?",
+      [produit.id]
+    );
+
+    if (product[0].quantité_en_stock < produit.quantite) {
+      insufficientStockProducts.push(produit.id);
+    }
+  }
+
+  if (insufficientStockProducts.length > 0) {
+    return res.status(400).send({
+      message: `Insufficient stock for products with IDs: ${insufficientStockProducts.join(
+        ", "
+      )}`,
+    });
+  }
+
+  try {
+    await db.beginTransaction();
+
+    const [result] = await db.query(
+      "INSERT INTO commandes (id_client) VALUES (?)",
+      [clientId]
+    );
+    const commandeId = result.insertId;
+
+    for (const produit of produits) {
+      await db.query(
+        "INSERT INTO produits_commandes (id_commande, id_produit, quantite) VALUES (?, ?, ?)",
+        [commandeId, produit.id, produit.quantite]
+      );
+
+      await db.query(
+        "UPDATE produits SET quantité_en_stock = quantité_en_stock - ? WHERE id = ?",
+        [produit.quantite, produit.id]
+      );
+    }
+
+    await db.commit();
+
+    res.status(201).send({ message: "Order created successfully!" });
+  } catch (error) {
+    await db.rollback();
+    console.error(error);
+    res.status(500).send("An error occurred while creating the order.");
+  }
+});
 
 commandeRouteur.delete("/:id", async (req, res) => {
   const { id } = req.params;
