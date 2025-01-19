@@ -24,11 +24,11 @@ produitCommandesRouteur.get("/", async (req, res) => {
 });
 
 produitCommandesRouteur.post("/", async (req, res) => {
-  const { id_commande, id_produit } = req.body;
+  const { id_commande, id_produit, quantite } = req.body;
   try {
     await db.query(
       "INSERT INTO produits_commandes (id_commande, id_produit,quantite) VALUES (?, ?,?)",
-      [id_commande, id_produit]
+      [id_commande, id_produit, quantite]
     );
     res.sendStatus(200);
   } catch (error) {
@@ -54,11 +54,11 @@ produitCommandesRouteur.delete("/:id", async (req, res) => {
 
 produitCommandesRouteur.put("/:id", async (req, res) => {
   const { id } = req.params;
-  const { id_commande, id_produit } = req.body;
+  const { id_commande, id_produit, quantite } = req.body;
   try {
     await db.query(
-      "UPDATE produits_commandes SET id_commande = ?, id_produit = ? WHERE id = ?",
-      [id_commande, id_produit, id]
+      "UPDATE produits_commandes SET id_commande = ?, id_produit = ?, quantite = ? WHERE id = ?",
+      [id_commande, id_produit, quantite, id]
     );
     res.sendStatus(200);
   } catch (error) {
